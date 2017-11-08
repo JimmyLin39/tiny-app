@@ -46,19 +46,21 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 // URL Submission Form debug
-app.post("/urls", (req, res) => {
+app.post("/u", (req, res) => {
   // debug statement to see POST parameters
-  // console.log(req.body);
+  console.log(req.body);
   let shortForm = generateRandomString();
 
   // add URL and shortFrom to urlDatabase
   urlDatabase[shortForm] = req.body.longURL;
-  // console.log(urlDatabase);
+  console.log(urlDatabase);
 
   // Respond with a random string and it's longURL
-  res.send(`${shortForm}: ${urlDatabase[shortForm]}`);
+  res.redirect(`/u/${shortForm}`);
+  // res.send(`${shortForm}: ${urlDatabase[shortForm]}`);
 });
 
+// Redirect short URLs to longURL
 app.get("/u/:shortURL", (req, res) => {
   let longURL = urlDatabase[req.params.shortURL];
   // console.log(longURL);
