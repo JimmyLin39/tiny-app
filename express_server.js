@@ -1,6 +1,8 @@
 const express = require('express');
-const app = express();
 const bodyParser = require("body-parser");
+
+// Initialize express
+const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
@@ -23,6 +25,8 @@ function generateRandomString() {
   return randomString;
 }
 
+// Defining (registering) a HTTP GET request on /
+// Along with a callback func that will handle the request
 app.get("/", (req, res) => {
   res.end("Hello!");
 });
@@ -47,10 +51,9 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 
-// URL Submission Form
-app.post("/u", (req, res) => {
+// Get post info from URL Submission Form
+app.post("/urls", (req, res) => {
   // debug statement to see POST parameters
-  console.log(req.body);
   const shortForm = generateRandomString();
 
   // add URL and shortFrom to urlDatabase
@@ -59,8 +62,6 @@ app.post("/u", (req, res) => {
 
   // Redirect to /urls and list urlDatabase
   res.redirect(`/urls`);
-  //res.redirect(`/u/${shortForm}`);
-  // res.send(`${shortForm}: ${urlDatabase[shortForm]}`);
 });
 
 // Redirect short URLs to longURL
@@ -79,6 +80,7 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
+// Start the server
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
