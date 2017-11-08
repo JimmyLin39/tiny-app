@@ -10,6 +10,18 @@ var urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+// generate a string of 6 random alphanumeric characters
+function generateRandomString() {
+  var RandomString = "";
+  var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < 6; i++){
+    RandomString += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  // console.log(RandomString);
+  return RandomString;
+}
+
 app.get("/", (req, res) => {
   res.end("Hello!");
 });
@@ -33,7 +45,7 @@ app.get("/urls", (req, res) => {
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
-
+// URL Submission Form debug
 app.post("/urls", (req, res) => {
   // debug statement to see POST parameters
   console.log(req.body);
