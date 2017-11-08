@@ -54,10 +54,10 @@ app.get("/urls/new", (req, res) => {
 // Get post info from URL Submission Form
 app.post("/urls", (req, res) => {
   // generate a 6 character short string
-  const shortForm = generateRandomString();
+  const shortURL = generateRandomString();
 
-  // add URL and shortFrom to urlDatabase
-  urlDatabase[shortForm] = req.body.longURL;
+  // add URL and shortURL to urlDatabase
+  urlDatabase[shortURL] = req.body.longURL;
   console.log(urlDatabase);
 
   // Redirect to /urls and list urlDatabase
@@ -78,7 +78,6 @@ app.post("/urls/:id/delete", (req, res) =>{
   res.redirect('/urls');
 });
 
-
 // Passing request data to .view/urls_show.ejs
 // List full URL by request short URL
 app.get("/urls/:id", (req, res) => {
@@ -87,6 +86,19 @@ app.get("/urls/:id", (req, res) => {
     urls: urlDatabase
   };
   res.render("urls_show", templateVars);
+});
+
+// Updates the URL after user click the `upadate` button
+// Redirects to /urls
+app.post("/urls/:id", (req, res) =>{
+  console.log(req.params.id);
+  console.log(req.body.longURL);
+  let shortURL = req.params.id;
+  let newLongURL = req.body.longURL;
+  urlDatabase[shortURL] = newLongURL;
+
+  console.log(urlDatabase);
+  res.redirect('/urls');
 });
 
 // Start the server
