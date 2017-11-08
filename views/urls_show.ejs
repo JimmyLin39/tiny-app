@@ -5,13 +5,19 @@
   <title>TinyApp</title>
 </head>
 <body>
-    <!-- Add your EJS code here -->
+  <!-- Add your EJS code here -->
+  <header>
+    <% include ./partials/_header %>
+  </header>
+
+  <main>
     <% for (shortForm in urls){ %>
       <!-- match the respond id with urlDatabase -->
       <% if ( shortURL === shortForm) { %>
         <li><%= shortForm %>: <%= urls[shortForm] %></li>
-        <% } %>
+      <% } %>
     <% } %>
+  </main>
 
 </body>
 </html>

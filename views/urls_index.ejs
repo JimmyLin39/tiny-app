@@ -1,15 +1,23 @@
+<!-- list short form link and it's full url -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <title>TinyApp</title>
 </head>
 <body>
-    <!-- Add your EJS code here -->
+  <!-- Add your EJS code here -->
+  <header>
+    <% include ./partials/_header %>
+  </header>
+
+  <main>
     <% for (shortForm in urls){ %>
-    <li><%= shortForm %>: <%= urls[shortForm] %></li>
+      <li><%= shortForm %>: <%= urls[shortForm] %></li>
     <% } %>
 
-    <!-- <a href=""></a> -->
+    <a href="">short</a>
+  </main>
+
 
 </body>
 </html>
