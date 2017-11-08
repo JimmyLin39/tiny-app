@@ -48,9 +48,21 @@ app.get("/urls/new", (req, res) => {
 // URL Submission Form debug
 app.post("/urls", (req, res) => {
   // debug statement to see POST parameters
-  console.log(req.body);
-  // Respond with 'Ok' (we will replace this)
-  res.send("Ok");
+  // console.log(req.body);
+  let shortForm = generateRandomString();
+
+  // add URL and shortFrom to urlDatabase
+  urlDatabase[shortForm] = req.body.longURL;
+  // console.log(urlDatabase);
+
+  // Respond with a random string and it's longURL
+  res.send(`${shortForm}: ${urlDatabase[shortForm]}`);
+});
+
+app.get("/u/:shortURL", (req, res) => {
+  let longURL = urlDatabase[req.params.shortURL];
+  // console.log(longURL);
+  res.redirect(longURL);
 });
 
 // passing request data to .view/urls_show.ejs
@@ -62,9 +74,6 @@ app.get("/urls/:id", (req, res) => {
   };
   res.render("urls_show", templateVars);
 });
-
-
-
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
