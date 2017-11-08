@@ -1,4 +1,4 @@
-<!-- list short form link and it's full url -->
+<!-- list all short URL and it's full URL -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,9 +11,31 @@
   </header>
 
   <main>
+    <!-- // list all URLs -->
+    <!--<% for (let shortForm in urls){ %> -->
+      <!-- <li><%= shortForm %>:<%= urls[shortForm] %></li> -->
+    <!-- <% } %> -->
+
+  <table>
+    <!-- // list all URLs -->
     <% for (let shortForm in urls){ %>
-      <li><%= shortForm %>: <%= urls[shortForm] %></li>
+      <tr>
+          <td><%= shortForm %></td>
+          <td>-></td>
+          <td><%= urls[shortForm] %></td>
+          <td>
+            <!-- Add delete buttons to each URL object in the index page -->
+            <form method="POST" action="/urls/<%= shortForm %>/delete">
+              <input type="submit" value="DELETE">
+            </form>
+          </td>
+      </tr>
     <% } %>
+  </table>
+
+
+
+
 
     <a href="">short</a>
   </main>
