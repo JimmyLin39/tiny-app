@@ -40,7 +40,7 @@ app.get("/hello", (req, res) => {
 });
 
 // passing urlDatabase data to .views/urls_index.ejs
-// list short form link and it's full url
+// list all short URL and it's full URL
 app.get("/urls", (req, res) => {
   const templateVars = { urls: urlDatabase };
   res.render("urls_index", templateVars);
@@ -53,7 +53,7 @@ app.get("/urls/new", (req, res) => {
 
 // Get post info from URL Submission Form
 app.post("/urls", (req, res) => {
-  // debug statement to see POST parameters
+  // generate a 6 character short string
   const shortForm = generateRandomString();
 
   // add URL and shortFrom to urlDatabase
@@ -70,8 +70,17 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL);
 });
 
-// passing request data to .view/urls_show.ejs
-// list full url by request short form
+// Removes a URL resource from urlDatabase
+app.post("/urls/:id/delete", (req, res) =>{
+  //console.log(req.params.id);
+  delete urlDatabase[req.params.id];
+  console.log(urlDatabase);
+  res.end('deleted');
+});
+
+
+// Passing request data to .view/urls_show.ejs
+// List full URL by request short URL
 app.get("/urls/:id", (req, res) => {
   let templateVars = {
     shortURL: req.params.id,
