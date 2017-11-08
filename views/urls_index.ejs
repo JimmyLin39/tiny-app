@@ -22,7 +22,7 @@
       <tr>
           <td><%= shortForm %></td>
           <td>-></td>
-          <td><%= urls[shortForm] %></td>
+          <td><a href="<%= urls[shortForm] %>"><%= urls[shortForm] %></a></td>
           <td>
             <!-- Add delete buttons to each URL object in the index page -->
             <form method="POST" action="/urls/<%= shortForm %>/delete">
