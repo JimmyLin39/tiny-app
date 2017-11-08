@@ -16,13 +16,14 @@
       <!-- <li><%= shortForm %>:<%= urls[shortForm] %></li> -->
     <!-- <% } %> -->
 
-  <table>
+  <table width="400">
     <!-- // list all URLs -->
     <% for (let shortForm in urls){ %>
       <tr>
           <td><%= shortForm %></td>
           <td>-></td>
           <td><a href="<%= urls[shortForm] %>"><%= urls[shortForm] %></a></td>
+          <td><a href="/urls/<%= shortForm %>">Edit</a></td>
           <td>
             <!-- Add delete buttons to each URL object in the index page -->
             <form action="/urls/<%= shortForm %>/delete" method="POST">
