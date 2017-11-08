@@ -71,11 +71,11 @@ app.get("/u/:shortURL", (req, res) => {
 });
 
 // Removes a URL resource from urlDatabase
+// Redirects to /urls
 app.post("/urls/:id/delete", (req, res) =>{
   //console.log(req.params.id);
   delete urlDatabase[req.params.id];
-  console.log(urlDatabase);
-  res.end('deleted');
+  res.redirect('/urls');
 });
 
 
