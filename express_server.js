@@ -1,10 +1,12 @@
 const express = require('express');
 const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser')
 
 // Initialize express
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser());
 app.set("view engine", "ejs");
 
 // default port 8080
@@ -72,7 +74,7 @@ app.get("/u/:shortURL", (req, res) => {
 
 // Removes a URL resource from urlDatabase
 // Redirects to /urls
-app.post("/urls/:id/delete", (req, res) =>{
+app.post("/urls/:id/delete", (req, res) => {
   //console.log(req.params.id);
   delete urlDatabase[req.params.id];
   res.redirect('/urls');
@@ -90,15 +92,23 @@ app.get("/urls/:id", (req, res) => {
 
 // Updates the URL after user click the `upadate` button
 // Redirects to /urls
-app.post("/urls/:id", (req, res) =>{
-  console.log(req.params.id);
-  console.log(req.body.longURL);
+app.post("/urls/:id", (req, res) => {
   let shortURL = req.params.id;
   let newLongURL = req.body.longURL;
+  // Update urlDatabase
   urlDatabase[shortURL] = newLongURL;
 
-  console.log(urlDatabase);
   res.redirect('/urls');
+});
+
+// A login form will sets cookies after submit
+// Redirects to /urls
+app.post("/login", (req, res) => {
+  // username value submitted in the request body via the form
+  let username = req.body.username;
+  // set username to cookie
+  res.cookie("username", username)
+  res.redirect("/urls");
 });
 
 // Start the server
