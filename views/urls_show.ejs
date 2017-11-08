@@ -14,7 +14,16 @@
     <% for (let shortForm in urls){ %>
       <!-- match the respond id with urlDatabase -->
       <% if ( shortURL === shortForm) { %>
-        <li><%= shortForm %>: <%= urls[shortForm] %></li>
+        <h1>ShortURL: <%= shortForm %></h1>
+        <!-- Add an Update button that will update longURL -->
+        <form action="/urls/<%= shortForm %>" method="POST">
+          <input
+                 type="text"
+                 name="longURL"
+                 value="<%= urls[shortForm] %>"
+                 style="width: 200px">
+          <input type="submit" value="Update">
+        </form>
       <% } %>
     <% } %>
   </main>

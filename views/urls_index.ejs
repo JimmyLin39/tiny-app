@@ -25,7 +25,7 @@
           <td><a href="<%= urls[shortForm] %>"><%= urls[shortForm] %></a></td>
           <td>
             <!-- Add delete buttons to each URL object in the index page -->
-            <form method="POST" action="/urls/<%= shortForm %>/delete">
+            <form action="/urls/<%= shortForm %>/delete" method="POST">
               <input type="submit" value="DELETE">
             </form>
           </td>
