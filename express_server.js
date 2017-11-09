@@ -7,6 +7,13 @@ const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
+// set username as local variable that can send to all views
+app.use((req, res, next) => {
+  res.locals.username = req.cookies["username"];
+  next();
+});
+
+
 app.set("view engine", "ejs");
 
 // default port 8080
@@ -33,20 +40,11 @@ app.get("/", (req, res) => {
   res.end("Hello!");
 });
 
-app.get("/urls.json", (req, res) => {
-  res.json(urlDatabase);
-});
-
-app.get("/hello", (req, res) => {
-  res.end("<html><body>Hello <b>World</b></body></html>\n");
-});
-
 // passing data to .views/urls_index.ejs
 // list all short URL and it's full URL
 app.get("/urls", (req, res) => {
   const templateVars = {
     urls: urlDatabase,
-    username: req.cookies["username"]
   };
 
   res.render("urls_index", templateVars);
@@ -54,10 +52,7 @@ app.get("/urls", (req, res) => {
 
 // Create a URL Submission Form
 app.get("/urls/new", (req, res) => {
-  const templateVars = {
-    username: req.cookies["username"]
-  }
-  res.render("urls_new", templateVars);
+  res.render("urls_new");
 });
 
 // Get post info from URL Submission Form
@@ -67,7 +62,6 @@ app.post("/urls", (req, res) => {
 
   // add URL and shortURL to urlDatabase
   urlDatabase[shortURL] = req.body.longURL;
-  console.log(urlDatabase);
 
   // Redirect to /urls and list urlDatabase
   res.redirect(`/urls`);
@@ -82,7 +76,6 @@ app.get("/u/:shortURL", (req, res) => {
 // Removes a URL resource from urlDatabase
 // Redirects to /urls
 app.post("/urls/:id/delete", (req, res) => {
-  //console.log(req.params.id);
   delete urlDatabase[req.params.id];
   res.redirect('/urls');
 });
@@ -93,7 +86,6 @@ app.get("/urls/:id", (req, res) => {
   const templateVars = {
     shortURL: req.params.id,
     urls: urlDatabase,
-    username: req.cookies["username"]
   };
   res.render("urls_show", templateVars);
 });
