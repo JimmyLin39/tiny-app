@@ -133,14 +133,16 @@ app.get("/login", (req, res) => {
 // Redirects to /
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
-  const hasEmail = findByEmail(email);
+  const rightEmail = findByEmail(email);
   const user = findUser(email, password);
-  const user_id = user["user_id"];
-  if ( !hasEmail ) {
+  // A user cannot log in with an incorrect email
+  if ( !rightEmail ) {
     res.status(403).send("E-mail address cannot be found.");
+  // A user cannot log in with an incorrect password
   } else if ( !user ) {
     res.status(403).send(`Password not match to ${email}`);
   } else {
+    const user_id = user["user_id"];
     // set user_id to cookie
     res.cookie("user_id", user_id);
     res.redirect('/');
