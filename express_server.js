@@ -41,10 +41,15 @@ app.get("/hello", (req, res) => {
   res.end("<html><body>Hello <b>World</b></body></html>\n");
 });
 
-// passing urlDatabase data to .views/urls_index.ejs
+// passing data to .views/urls_index.ejs
 // list all short URL and it's full URL
 app.get("/urls", (req, res) => {
-  const templateVars = { urls: urlDatabase };
+  const templateVars = {
+    urls: urlDatabase,
+    // Passing username to the each EJS template to display username
+    username: req.cookies["username"]
+  };
+
   res.render("urls_index", templateVars);
 });
 
@@ -107,9 +112,12 @@ app.post("/login", (req, res) => {
   // username value submitted in the request body via the form
   let username = req.body.username;
   // set username to cookie
-  res.cookie("username", username)
+  res.cookie("username", username);
+
   res.redirect("/urls");
 });
+
+
 
 // Start the server
 app.listen(PORT, () => {
