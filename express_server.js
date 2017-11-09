@@ -119,6 +119,11 @@ app.post("/urls/:id", (req, res) => {
   res.redirect('/urls');
 });
 
+// Go to Login page
+app.get("/login", (req, res) => {
+  res.render("urls_login");
+});
+
 // A login form will sets cookies after submit
 // Redirects to /urls
 app.post("/login", (req, res) => {
@@ -137,7 +142,7 @@ app.post("/logout", (req, res) => {
   res.redirect("/urls");
 });
 
-// Go to a registration page
+// Go to Registration page
 // page includes a form with an email and password field
 app.get("/register", (req, res) => {
   res.render("urls_register");
