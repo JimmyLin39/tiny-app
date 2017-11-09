@@ -1,5 +1,6 @@
 <header>
-  <% if( user_id ){ %>
+    <!-- A login form will sets cookies after submit -->
+  <% if ( user_id ) { %>
     <form action="/logout" method="POST">
       <!-- display user email -->
       <% for (const id of users){ -%>
@@ -10,16 +11,9 @@
       <!-- a logout button POST /logout and clear user_id cookie -->
       <input type="submit" value="Logout">
     </form>
-  <% } else{ %>
-    <!-- A login form will sets cookies after submit -->
-    <form action="/login" method="POST">
-      <label for="user_id">user_id:</label>
-      <input id = "user_id"
-             type="text"
-             name="user_id"
-             style="width: 100px">
-      <input type="submit" value="Submit">
-      <a href="/register">Register</a>
-    </form>
+  <% }else { %>
+    <a href="/login">Login</a>
+    <a href="/register">Register</a>
   <% } %>
+
 </header>
