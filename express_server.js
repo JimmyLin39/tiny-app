@@ -12,7 +12,7 @@ app.use((req, res, next) => {
   res.locals.user_id = req.cookies["user_id"];
   // pass entire `users` string Object to _header.ejs
   res.locals.users = users;
-  console.log("header:", res.locals.users);
+  // console.log("header:", res.locals.users);
   next();
 });
 
@@ -43,6 +43,11 @@ function findUser(email, password) {
   return users.find((user) => user.email === email && user.password === password);
 }
 
+// Find user by email
+function findByEmail(email) {
+  return users.find((user) => user.email === email);
+}
+
 // generate a string of 6 random alphanumeric characters
 function generateRandomString() {
   let randomString = "";
@@ -57,7 +62,7 @@ function generateRandomString() {
 // Defining (registering) a HTTP GET request on /
 // Along with a callback func that will handle the request
 app.get("/", (req, res) => {
-  res.end("Hello!");
+  res.redirect("/urls");
 });
 
 // passing data to .views/urls_index.ejs
@@ -82,7 +87,7 @@ app.post("/urls", (req, res) => {
   urlDatabase[shortURL] = req.body.longURL;
 
   // Redirect to /urls and list urlDatabase
-  res.redirect(`/urls`);
+  res.redirect("/urls");
 });
 
 // Redirect short URLs to longURL
@@ -95,7 +100,7 @@ app.get("/u/:shortURL", (req, res) => {
 // Redirects to /urls
 app.post("/urls/:id/delete", (req, res) => {
   delete urlDatabase[req.params.id];
-  res.redirect('/urls');
+  res.redirect("/urls");
 });
 
 // Passing request data to .view/urls_show.ejs
@@ -116,7 +121,7 @@ app.post("/urls/:id", (req, res) => {
   // Update urlDatabase
   urlDatabase[shortURL] = newLongURL;
 
-  res.redirect('/urls');
+  res.redirect("/urls");
 });
 
 // Go to Login page
@@ -125,14 +130,21 @@ app.get("/login", (req, res) => {
 });
 
 // A login form will sets cookies after submit
-// Redirects to /urls
+// Redirects to /
 app.post("/login", (req, res) => {
-  // user_id value submitted in the request body via the form
-  let user_id = req.body.user_id;
-  // set user_id to cookie
-  res.cookie("user_id", user_id);
-
-  res.redirect("/urls");
+  const { email, password } = req.body;
+  const hasEmail = findByEmail(email);
+  const user = findUser(email, password);
+  const user_id = user["user_id"];
+  if ( !hasEmail ) {
+    res.status(403).send("E-mail address cannot be found.");
+  } else if ( !user ) {
+    res.status(403).send(`Password not match to ${email}`);
+  } else {
+    // set user_id to cookie
+    res.cookie("user_id", user_id);
+    res.redirect('/');
+  }
 });
 
 // Log out and clear the user_id cookie
