@@ -1,4 +1,4 @@
-<!-- list full url by short form link -->
+<%# list full url by short form link %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,10 +12,10 @@
 
   <main>
     <% for (let shortForm in urls){ %>
-      <!-- match the respond id with urlDatabase -->
+      <%# match the respond id with urlDatabase %>
       <% if ( shortURL === shortForm) { %>
         <h1>ShortURL: <%= shortForm %></h1>
-        <!-- Add an Update button that will update longURL -->
+        <%# Add an Update button that will update longURL %>
         <form action="/urls/<%= shortForm %>" method="POST">
           <input
                  type="text"

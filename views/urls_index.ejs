@@ -1,38 +1,29 @@
-<!-- list all short URL and it's full URL -->
+<%# list all short URL and it's full URL -%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <title>Tiny App</title>
 </head>
 <body>
-  <!-- Add your EJS code here -->
-  <header>
-    <% include ./partials/_header %>
-  </header>
-
+  <% include ./partials/_header %>
   <main>
-
-  <table width="400">
-    <!-- // list all URLs -->
-    <% for (var shortForm in urls){ %>
-      <tr>
-          <td><%= shortForm %></td>
-          <td>-></td>
-          <td><a href="<%= urls[shortForm] %>"><%= urls[shortForm] %></a></td>
-          <td><a href="/urls/<%= shortForm %>">Edit</a></td>
-          <td>
-            <!-- Add delete buttons to each URL object in the index page -->
-            <form action="/urls/<%= shortForm %>/delete" method="POST">
-              <input type="submit" value="DELETE">
-            </form>
-          </td>
-      </tr>
-    <% } %>
-  </table>
-
-
-
-
+    <table width="400">
+      <%# list all URLs -%>
+      <% for (var shortForm in urls){ -%>
+        <tr>
+            <td><%= shortForm %></td>
+            <td>-></td>
+            <td><a href="<%= urls[shortForm] %>"><%= urls[shortForm] %></a></td>
+            <td><a href="/urls/<%= shortForm %>">Edit</a></td>
+            <td>
+              <%# Add delete buttons to each URL object in the index page -%>
+              <form action="/urls/<%= shortForm %>/delete" method="POST">
+                <input type="submit" value="DELETE">
+              </form>
+            </td>
+        </tr>
+      <% } %>
+    </table>
 
     <a href="">short</a>
   </main>

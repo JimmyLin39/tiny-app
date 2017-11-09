@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Tiny APP</title>
-</head>
-<body>
+<header>
   <% if( username ){ %>
     <form action="/logout" method="POST">
       <!-- display username -->
       Hello <%= username %>
-      <!-- a logout buttom POST /logout and clear username cookie -->
+      <!-- a logout button POST /logout and clear username cookie -->
       <input type="submit" value="Logout">
     </form>
   <% } else{ %>
@@ -22,8 +17,4 @@
       <input type="submit" value="Submit">
     </form>
   <% } %>
-
-
-
-</body>
-</html>
+</header>
