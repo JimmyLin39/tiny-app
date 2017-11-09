@@ -1,0 +1,16 @@
+<!-- A registation page that includes a form with an email and password field -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Tiny App</title>
+  </head>
+  <body>
+    <% include partials/_header %>
+
+    <form action="/register" method="POST">
+      email: <input type="email" name="email">
+      password: <input type="password" name="password">
+      <input type="submit" name="Submit">
+    </form>
+  </body>
+</html>
