@@ -85,7 +85,7 @@ app.post("/urls/:id/delete", (req, res) => {
 app.get("/urls/:id", (req, res) => {
   const templateVars = {
     shortURL: req.params.id,
-    urls: urlDatabase,
+    urls: urlDatabase[req.params.id],
   };
   res.render("urls_show", templateVars);
 });
