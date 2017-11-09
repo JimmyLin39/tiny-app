@@ -1,20 +1,25 @@
 <header>
-  <% if( username ){ %>
+  <% if( user_id ){ %>
     <form action="/logout" method="POST">
-      <!-- display username -->
-      Hello <%= username %>
-      <!-- a logout button POST /logout and clear username cookie -->
+      <!-- display user email -->
+      <% for (const id of users){ -%>
+        <% if (id.user_id === user_id) { %>
+          Hello <%= id.email %>
+        <% } %>
+      <% } %>
+      <!-- a logout button POST /logout and clear user_id cookie -->
       <input type="submit" value="Logout">
     </form>
   <% } else{ %>
     <!-- A login form will sets cookies after submit -->
     <form action="/login" method="POST">
-      <label for="username">Username:</label>
-      <input id = "username"
+      <label for="user_id">user_id:</label>
+      <input id = "user_id"
              type="text"
-             name="username"
+             name="user_id"
              style="width: 100px">
       <input type="submit" value="Submit">
+      <a href="/register">Register</a>
     </form>
   <% } %>
 </header>
