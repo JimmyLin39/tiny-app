@@ -46,7 +46,6 @@ app.get("/hello", (req, res) => {
 app.get("/urls", (req, res) => {
   const templateVars = {
     urls: urlDatabase,
-    // Passing username to _header.ejs
     username: req.cookies["username"]
   };
 
@@ -55,7 +54,10 @@ app.get("/urls", (req, res) => {
 
 // Create a URL Submission Form
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  const templateVars = {
+    username: req.cookies["username"]
+  }
+  res.render("urls_new", templateVars);
 });
 
 // Get post info from URL Submission Form
@@ -88,9 +90,10 @@ app.post("/urls/:id/delete", (req, res) => {
 // Passing request data to .view/urls_show.ejs
 // List full URL by request short URL
 app.get("/urls/:id", (req, res) => {
-  let templateVars = {
+  const templateVars = {
     shortURL: req.params.id,
-    urls: urlDatabase
+    urls: urlDatabase,
+    username: req.cookies["username"]
   };
   res.render("urls_show", templateVars);
 });
