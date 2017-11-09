@@ -46,7 +46,7 @@ app.get("/hello", (req, res) => {
 app.get("/urls", (req, res) => {
   const templateVars = {
     urls: urlDatabase,
-    // Passing username to the each EJS template to display username
+    // Passing username to _header.ejs
     username: req.cookies["username"]
   };
 
