@@ -23,18 +23,18 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 // Store user info
-const users = {
-  "amy": {
-    id: "amy",
+const users = [
+  {
+    id: "1",
     email: "amy@example.com",
     password: "amy"
   },
- "tom": {
-    id: "tom",
+  {
+    id: "2",
     email: "tom@example.com",
     password: "tom"
   }
-}
+]
 
 
 // generate a string of 6 random alphanumeric characters
@@ -134,9 +134,23 @@ app.post("/logout", (req, res) => {
 // Go to a registration page
 // page includes a form with an email and password field
 app.get("/register", (req, res) => {
-
-
   res.render("urls_register");
+});
+
+// Add a new user object in the global `users` object
+// Redirects to /urls
+app.post("/register", (req, res) => {
+  const { email, password } = req.body;
+  const id = generateRandomString();
+  users.push({
+    id: id,
+    email: email,
+    password: password
+  });
+  console.log(users);
+  res.cookie("user_id", id);
+
+  res.redirect('/urls');
 });
 
 
