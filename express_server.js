@@ -7,9 +7,12 @@ const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
-// set username as local variable that can send to all views
+// set user_id as local variable that can send to all views
 app.use((req, res, next) => {
-  res.locals.username = req.cookies["username"];
+  res.locals.user_id = req.cookies["user_id"];
+  // pass entire `users` string Object to _header.ejs
+  res.locals.users = users;
+  console.log("header:", res.locals.users);
   next();
 });
 
@@ -25,12 +28,12 @@ const urlDatabase = {
 // Store user info
 const users = [
   {
-    id: "1",
+    user_id: "1",
     email: "amy@example.com",
     password: "amy"
   },
   {
-    id: "2",
+    user_id: "2",
     email: "tom@example.com",
     password: "tom"
   }
@@ -119,18 +122,18 @@ app.post("/urls/:id", (req, res) => {
 // A login form will sets cookies after submit
 // Redirects to /urls
 app.post("/login", (req, res) => {
-  // username value submitted in the request body via the form
-  let username = req.body.username;
-  // set username to cookie
-  res.cookie("username", username);
+  // user_id value submitted in the request body via the form
+  let user_id = req.body.user_id;
+  // set user_id to cookie
+  res.cookie("user_id", user_id);
 
   res.redirect("/urls");
 });
 
-// Log out and clear the username cookie
+// Log out and clear the user_id cookie
 // Redirects to /urls
 app.post("/logout", (req, res) => {
-  res.clearCookie("username");
+  res.clearCookie("user_id");
   res.redirect("/urls");
 });
 
@@ -154,11 +157,11 @@ app.post("/register", (req, res) => {
   } else {
     const id = generateRandomString();
     users.push({
-      id: id,
+      user_id: id,
       email: email,
       password: password
     });
-    console.log(users);
+    //console.log(users);
     res.cookie("user_id", id);
 
     res.redirect('/urls');
