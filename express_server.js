@@ -1,6 +1,6 @@
-const express = require('express');
+const express = require("express");
 const bodyParser = require("body-parser");
-const cookieParser = require('cookie-parser')
+const cookieParser = require("cookie-parser");
 
 // Initialize express
 const app = express();
@@ -12,7 +12,6 @@ app.use((req, res, next) => {
   res.locals.username = req.cookies["username"];
   next();
 });
-
 
 app.set("view engine", "ejs");
 
@@ -46,7 +45,6 @@ app.get("/urls", (req, res) => {
   const templateVars = {
     urls: urlDatabase,
   };
-
   res.render("urls_index", templateVars);
 });
 
@@ -59,7 +57,6 @@ app.get("/urls/new", (req, res) => {
 app.post("/urls", (req, res) => {
   // generate a 6 character short string
   const shortURL = generateRandomString();
-
   // add URL and shortURL to urlDatabase
   urlDatabase[shortURL] = req.body.longURL;
 
@@ -118,6 +115,15 @@ app.post("/logout", (req, res) => {
   res.clearCookie("username");
   res.redirect("/urls");
 });
+
+// Go to a registration page
+// page includes a form with an email and password field
+app.get("/register", (req, res) => {
+
+
+  res.render("urls_register");
+});
+
 
 // Start the server
 app.listen(PORT, () => {
