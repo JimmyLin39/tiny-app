@@ -11,7 +11,7 @@
   </header>
 
   <main>
-    <% for (let shortForm in urls){ %>
+    <% for (var shortForm in urls){ %>
       <!-- match the respond id with urlDatabase -->
       <% if ( shortURL === shortForm) { %>
         <h1>ShortURL: <%= shortForm %></h1>
