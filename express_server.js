@@ -15,12 +15,27 @@ app.use((req, res, next) => {
 
 app.set("view engine", "ejs");
 
-// default port 8080
+// Default port 8080
 const PORT = process.env.PORT || 8080;
+// Store URL info
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
+// Store user info
+const users = {
+  "amy": {
+    id: "amy",
+    email: "amy@example.com",
+    password: "amy"
+  },
+ "tom": {
+    id: "tom",
+    email: "tom@example.com",
+    password: "tom"
+  }
+}
+
 
 // generate a string of 6 random alphanumeric characters
 function generateRandomString() {
