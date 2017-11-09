@@ -35,7 +35,10 @@ const users = [
     password: "tom"
   }
 ]
-
+// Find user in `users`
+function findUser(email, password) {
+  return users.find((user) => user.email === email && user.password === password);
+}
 
 // generate a string of 6 random alphanumeric characters
 function generateRandomString() {
@@ -141,16 +144,25 @@ app.get("/register", (req, res) => {
 // Redirects to /urls
 app.post("/register", (req, res) => {
   const { email, password } = req.body;
-  const id = generateRandomString();
-  users.push({
-    id: id,
-    email: email,
-    password: password
-  });
-  console.log(users);
-  res.cookie("user_id", id);
+  const user = findUser(email, password);
+  // If the e-mail or password are empty strings
+  if (!email || !password) {
+    res.status(400).send('Please input email or password.');
+  // If user already exist
+  }else if ( user ) {
+    res.status(400).send(`User ${email} already exist.`);
+  } else {
+    const id = generateRandomString();
+    users.push({
+      id: id,
+      email: email,
+      password: password
+    });
+    console.log(users);
+    res.cookie("user_id", id);
 
-  res.redirect('/urls');
+    res.redirect('/urls');
+  }
 });
 
 
