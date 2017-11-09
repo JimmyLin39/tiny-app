@@ -8,8 +8,10 @@
     <% include partials/_header %>
 
     <form action="/register" method="POST">
-      email: <input type="email" name="email">
-      password: <input type="password" name="password">
+       label for="email">email</label>
+      <input id="email" type="email" name="email">
+      <label for="password">password</label>
+      <input id="password" type="password" name="password">
       <input type="submit" name="Submit">
     </form>
   </body>
