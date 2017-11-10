@@ -9,18 +9,18 @@
   <main>
     <table width="400">
       <%# list all URLs -%>
-      <% for (var shortForm in urls){ -%>
+      <% for (let element of urls){ -%>
         <tr>
-            <td><%= shortForm %></td>
-            <td>-></td>
-            <td><a href="<%= urls[shortForm] %>"><%= urls[shortForm] %></a></td>
-            <td><a href="/urls/<%= shortForm %>">Edit</a></td>
-            <td>
-              <%# Add delete buttons to each URL object in the index page -%>
-              <form action="/urls/<%= shortForm %>/delete" method="POST">
-                <input type="submit" value="DELETE">
-              </form>
-            </td>
+          <td><%= element.shortURL %></td>
+          <td>-></td>
+          <td><a href="<%= element.longURL %>"><%= element.longURL %></a></td>
+          <td><a href="/urls/<%= element.shortURL %>">Edit</a></td>
+          <td>
+            <%# Add delete buttons to each URL object in the index page -%>
+            <form action="/urls/<%= element.shortURL %>/delete" method="POST">
+              <input type="submit" value="DELETE">
+            </form>
+          </td>
         </tr>
       <% } %>
     </table>

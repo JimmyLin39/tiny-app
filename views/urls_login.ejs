@@ -4,13 +4,17 @@
     <title>Tiny App</title>
   </head>
   <body>
-
+    <h1>Login</h1>
     <form action="/login" method="POST">
       <label for="email">email</label>
       <input id="email" type="email" name="email">
       <label for="password">password</label>
       <input id="password" type="password" name="password">
+      <!-- a Login button POST info to /login -->
       <input type="submit" value="Login">
+      <!-- a link goto register page -->
+      <a href="/register">Register</a>
     </form>
+
   </body>
 </html>
