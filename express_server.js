@@ -59,7 +59,7 @@ function findByEmail(email) {
 
 // Find user by id
 function findByID(id, database) {
-  return database.find((user) => user.userID == id);
+  return database.find((user) => user == id);
 }
 
 // generate a string of 6 random alphanumeric characters
@@ -99,31 +99,33 @@ app.get("/urls", (req, res) => {
     // find userIDs in urlDatabase
     const userID = urlDatabase[shortURL].userID;
     // looking for user_id in userID string
-    const hasUserID = userID.find((user) => user === user_id);
-
-    // If user_id is in userID string
-    // current user have right to see/edit/delete their short URL
-    if ( hasUserID ) {
-      templateVars.urls.push(urlDatabase[shortURL]) ;
-      // console.log(templateVars);
-      // console.log(urlDatabase[shortURL].shortURL);
-    }
+    userID.forEach( function(element) {
+      // If user_id is in userID string
+      // current user have right to see/edit/delete their short URL
+      if (element === user_id){
+        templateVars.urls.push(urlDatabase[shortURL]) ;
+      }
+    });
   }
   res.render("urls_index", templateVars);
 });
 
-// Create a URL Submission Form
+// Create a new shortURL page
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 
-// Get post info from URL Submission Form
+// Get post info from create a new shortURL page
 app.post("/urls", (req, res) => {
   // generate a 6 character short string
   const shortURL = generateRandomString();
   // add URL and shortURL to urlDatabase
-  urlDatabase[shortURL] = req.body.longURL;
-
+  urlDatabase[shortURL] = {
+    shortURL: shortURL,
+    longURL: req.body.longURL,
+    userID: [req.cookies["user_id"]]
+  }
+  console.log(urlDatabase);
   // Redirect to /urls and list urlDatabase
   res.redirect("/urls");
 });
