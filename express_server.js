@@ -195,7 +195,7 @@ app.get('/u/:id', (req, res) => {
 app.post('/urls', (req, res) => {
   const user_id = req.session.user_id;
   // if user is not logged in
-  if (!user_id ) {
+  if (!user_id) {
     res.status(403).send('Please login.');
   } else {
     // generate a 6 character short string
@@ -264,31 +264,18 @@ app.get('/register', (req, res) => {
 // Redirects to /
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
-  const rightEmail = findUser(email, password);
   // Use bcrypt to check passwords
-  // const hashedPassword = users.password;
-  // console.log(hashedPassword);
   const rightPassword = findUser(email, password);
 
-  // A user cannot log in with an incorrect email
-  if ( !rightEmail ) {
-    res.status(403).send('E-mail address cannot be found.');
-  // A user cannot log in with an incorrect password
-  } else if ( !rightPassword ) {
-    res.status(403).send(`Password not match to ${email}`);
+  // A user cannot log in with an incorrect email or password
+  if ( !rightPassword ) {
+    res.status(403).send(`The email and password you entered did not match our records.`);
   } else {
     const user_id = findByEmail(email);
     // set the user_id key on a session then pass to cookie
     req.session.user_id = user_id;
     res.redirect('/');
   }
-});
-
-// Log out and clear the session cookie
-// Redirects to /urls
-app.post('/logout', (req, res) => {
-  req.session = null;
-  res.redirect('/');
 });
 
 // Add a new user object in the global `users` object
@@ -321,6 +308,12 @@ app.post('/register', (req, res) => {
   }
 });
 
+// Log out and clear the session cookie
+// Redirects to /urls
+app.post('/logout', (req, res) => {
+  req.session = null;
+  res.redirect('/');
+});
 
 // Start the server
 app.listen(PORT, () => {
