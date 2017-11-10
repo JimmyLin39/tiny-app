@@ -157,13 +157,6 @@ app.get('/urls/new', (req, res) => {
   }
 });
 
-// Removes a URL resource from urlDatabase
-// Redirects to /urls
-app.post('/urls/:id/delete', (req, res) => {
-  delete urlDatabase[req.params.id];
-  res.redirect('/urls');
-});
-
 // Passing request data to .view/urls_show.ejs
 // List full URL by request short URL
 app.get('/urls/:id', (req, res) => {
@@ -221,16 +214,50 @@ app.post('/urls', (req, res) => {
 // Updates the URL after user click the `upadate` button
 // Redirects to /urls
 app.post('/urls/:id', (req, res) => {
-  let shortURL = req.params.id;
-  let newLongURL = req.body.longURL;
-  // Update urlDatabase
-  urlDatabase[shortURL].longURL = newLongURL;
+  const user_id = req.session.user_id;
+  const shortURL = req.params.id;
+  // if user is not logged in
+  if (!user_id ) {
+    res.status(403).send('Please login.');
+  // if user is logged it but does not own the URL with the given ID
+  } else if ( !findShortUrlByID(shortURL, user_id) ) {
+    res.status(403).send('You did not own this short URL.');
+  } else {
+    const newLongURL = req.body.longURL;
+    // Update urlDatabase
+    urlDatabase[shortURL].longURL = newLongURL;
+    res.redirect('/urls');
+  }
+});
+
+// Removes a URL resource from urlDatabase
+// Redirects to /urls
+app.post('/urls/:id/delete', (req, res) => {
+  delete urlDatabase[req.params.id];
   res.redirect('/urls');
 });
 
 // Go to Login page
 app.get('/login', (req, res) => {
-  res.render('urls_login');
+  const user_id = req.session.user_id;
+  // if user is logged in
+  if (user_id) {
+    res.redirect('/urls')
+  } else {
+    res.render('urls_login');
+  }
+});
+
+// Go to Registration page
+// page includes a form with an email and password field
+app.get('/register', (req, res) => {
+  const user_id = req.session.user_id;
+  // if user is logged in
+  if (user_id) {
+    res.redirect('/urls')
+  } else {
+    res.render('urls_register');
+  }
 });
 
 // A login form will sets cookies after submit
@@ -262,12 +289,6 @@ app.post('/login', (req, res) => {
 app.post('/logout', (req, res) => {
   req.session = null;
   res.redirect('/');
-});
-
-// Go to Registration page
-// page includes a form with an email and password field
-app.get('/register', (req, res) => {
-  res.render('urls_register');
 });
 
 // Add a new user object in the global `users` object
