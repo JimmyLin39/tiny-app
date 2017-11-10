@@ -122,16 +122,15 @@ app.get('/', (req, res) => {
 // passing data to .views/urls_index.ejs
 // list all short URL and it's full URL
 app.get('/urls', (req, res) => {
+  const user_id = req.session.user_id;
   // if user is not logged in
-  if (!req.session.user_id ) {
+  if (!user_id ) {
     res.status(403).send('Please login.');
   } else {
     // set a temp value that can pass to urls_index
     const templateVars = {
       urls: []
     };
-    const user_id = req.session.user_id;
-
     // looking for user_id in urlDatabase
     for (let shortURL in urlDatabase) {
       // find userIDs in urlDatabase
@@ -141,7 +140,6 @@ app.get('/urls', (req, res) => {
       if (userID === user_id){
         templateVars.urls.push(urlDatabase[shortURL]) ;
       }
-
     }
     console.log(urlDatabase);
     res.render('urls_index', templateVars);
@@ -157,20 +155,6 @@ app.get('/urls/new', (req, res) => {
   } else {
     res.render('urls_new');
   }
-});
-
-// Get post info from create a new shortURL page
-app.post('/urls', (req, res) => {
-  // generate a 6 character short string
-  const shortURL = generateRandomString();
-  // add URL and shortURL to urlDatabase
-  urlDatabase[shortURL] = {
-    shortURL: shortURL,
-    longURL: req.body.longURL,
-    userID: req.session.user_id
-  }
-  // Redirect to /urls and list urlDatabase
-  res.redirect('/urls');
 });
 
 // Removes a URL resource from urlDatabase
@@ -189,7 +173,7 @@ app.get('/urls/:id', (req, res) => {
   if (!user_id ) {
     res.status(403).send('Please login.');
   // if a URL for the given ID does not exist
-  } else if (!findShortUrlByShortUrl(shortURL) ) {
+  } else if ( !findShortUrlByShortUrl(shortURL) ) {
     res.status(403).send('This short URL not exist, please create a new one.');
   // if user is logged it but does not own the URL with the given ID
   } else if ( !findShortUrlByID(shortURL, user_id) ) {
@@ -203,6 +187,37 @@ app.get('/urls/:id', (req, res) => {
   }
 });
 
+// Redirect short URLs to longURL
+app.get('/u/:id', (req, res) => {
+  const shortURL = req.params.id;
+  if ( !findShortUrlByShortUrl(shortURL) ) {
+    res.status(403).send('This short URL not exist, please contact owner.');
+  } else {
+    const longURL = urlDatabase[shortURL].longURL;
+    res.redirect(longURL);
+  }
+});
+
+// Get post info from create a new shortURL page
+app.post('/urls', (req, res) => {
+  const user_id = req.session.user_id;
+  // if user is not logged in
+  if (!user_id ) {
+    res.status(403).send('Please login.');
+  } else {
+    // generate a 6 character short string
+    const shortURL = generateRandomString();
+    // add URL and shortURL to urlDatabase
+    urlDatabase[shortURL] = {
+      shortURL: shortURL,
+      longURL: req.body.longURL,
+      userID: req.session.user_id
+    }
+    // Redirect to /urls and list urlDatabase
+    res.redirect(`/urls/${shortURL}`);
+  }
+});
+
 // Updates the URL after user click the `upadate` button
 // Redirects to /urls
 app.post('/urls/:id', (req, res) => {
@@ -210,14 +225,7 @@ app.post('/urls/:id', (req, res) => {
   let newLongURL = req.body.longURL;
   // Update urlDatabase
   urlDatabase[shortURL].longURL = newLongURL;
-
   res.redirect('/urls');
-});
-
-// Redirect short URLs to longURL
-app.get('/u/:shortURL', (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL].longURL;
-  res.redirect(longURL);
 });
 
 // Go to Login page
