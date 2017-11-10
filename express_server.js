@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const bcrypt = require('bcrypt');
 
 // Initialize express
 const app = express();
@@ -35,31 +36,41 @@ const urlDatabase = {
 };
 
 // Store user info
-const users = [
-  {
+const users = {
+  "1": {
     user_id: "1",
     email: "amy@example.com",
     password: "amy"
   },
-  {
+  "2": {
     user_id: "2",
     email: "tom@example.com",
     password: "tom"
   }
-]
+};
+
 // Find user in `users`
 function findUser(email, password) {
-  return users.find((user) => user.email === email && user.password === password);
+  // console.log(email);
+  for (let element in users){
+    // console.log(users[element]);
+    const hashedPassword = users[element].password;
+    const rightPassword =  bcrypt.compareSync(password, hashedPassword);
+    if ( users[element].email === email && rightPassword) {
+      return true;
+    }
+  }
+  return false;
 }
 
 // Find user by email
 function findByEmail(email) {
-  return users.find((user) => user.email === email);
-}
-
-// Find user by id
-function findByID(id, database) {
-  return database.find((user) => user == id);
+  for (let element in users) {
+    if ( users[element].email === email ) {
+      return users[element].user_id;
+    }
+  }
+  return false;
 }
 
 // generate a string of 6 random alphanumeric characters
@@ -173,16 +184,22 @@ app.get("/login", (req, res) => {
 // Redirects to /
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
-  const rightEmail = findByEmail(email);
-  const user = findUser(email, password);
+  const rightEmail = findUser(email, password);
+  // Use bcrypt to check passwords
+  // const hashedPassword = users.password;
+  // console.log(hashedPassword);
+  const rightPassword = findUser(email, password);
+
+
+
   // A user cannot log in with an incorrect email
   if ( !rightEmail ) {
     res.status(403).send("E-mail address cannot be found.");
   // A user cannot log in with an incorrect password
-  } else if ( !user ) {
+  } else if ( !rightPassword ) {
     res.status(403).send(`Password not match to ${email}`);
   } else {
-    const user_id = user["user_id"];
+    const user_id = findByEmail(email);
     // set user_id to cookie
     res.cookie("user_id", user_id);
     res.redirect("/");
@@ -203,24 +220,28 @@ app.get("/register", (req, res) => {
 });
 
 // Add a new user object in the global `users` object
+// Set user_id to cookie
 // Redirects to /urls
 app.post("/register", (req, res) => {
   const { email, password } = req.body;
-  const user = findUser(email, password);
+  const userExist = users[req.cookies["user_id"]];
   // If the e-mail or password are empty strings
   if (!email || !password) {
     res.status(400).send('Please input email or password.');
   // If user already exist
-  }else if ( user ) {
+  }else if ( userExist ) {
     res.status(400).send(`User ${email} already exist.`);
   } else {
     const id = generateRandomString();
-    users.push({
+    // apply bcrypt to the password
+    const hashedPassword = bcrypt.hashSync(password, 10);
+    // console.log(hashedPassword);
+    users[id] = {
       user_id: id,
       email: email,
-      password: password
-    });
-    //console.log(users);
+      password: hashedPassword
+    };
+    console.log(users);
     res.cookie("user_id", id);
 
     res.redirect('/urls');
