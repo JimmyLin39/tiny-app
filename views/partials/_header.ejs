@@ -3,9 +3,9 @@
   <% if ( user_id ) { %>
     <form action="/logout" method="POST">
       <!-- display user email -->
-      <% for (const id of users){ -%>
-        <% if (id.user_id === user_id) { %>
-          Hello <%= id.email %>
+      <% for (const id in users){ -%>
+        <% if (id === user_id) { %>
+          Hello <%= users[id].email %>
         <% } %>
       <% } %>
       <!-- a logout button POST /logout and clear user_id cookie -->
