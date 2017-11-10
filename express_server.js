@@ -78,14 +78,22 @@ function findByEmail(email) {
   return false;
 }
 
+// Find shortURL by shortURL
+function findShortUrlByShortUrl(shortURL) {
+  if ( urlDatabase[shortURL] ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 // Find shortURL by userID
 function findShortUrlByID(shortURL, id) {
-  // for (let element in urlDatabase) {
-    if ( urlDatabase[shortURL].userID === id ) {
-      return true;
-    }
-  // }
-  return false;
+  if ( urlDatabase[shortURL].userID === id ) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 // generate a string of 6 random alphanumeric characters
@@ -175,14 +183,21 @@ app.post('/urls/:id/delete', (req, res) => {
 // Passing request data to .view/urls_show.ejs
 // List full URL by request short URL
 app.get('/urls/:id', (req, res) => {
-  if (!req.session.user_id ) {
+  const shortURL = req.params.id;
+  const user_id =  req.session.user_id;
+  // if user is not logged in
+  if (!user_id ) {
     res.status(403).send('Please login.');
-  } else if ( !findShortUrlByID(req.params.id, req.session.user_id) ) {
-    res.status(403).send('You did not create this short URL');
+  // if a URL for the given ID does not exist
+  } else if (!findShortUrlByShortUrl(shortURL) ) {
+    res.status(403).send('This short URL not exist, please create a new one.');
+  // if user is logged it but does not own the URL with the given ID
+  } else if ( !findShortUrlByID(shortURL, user_id) ) {
+    res.status(403).send('You did not own this short URL.');
   } else {
     const templateVars = {
-      shortURL: req.params.id,
-      urls: urlDatabase[req.params.id],
+      shortURL: shortURL,
+      urls: urlDatabase[shortURL],
     };
     res.render('urls_show', templateVars);
   }
