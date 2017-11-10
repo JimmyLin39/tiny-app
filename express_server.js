@@ -2,15 +2,21 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const bcrypt = require('bcrypt');
+const cookieSession = require('cookie-session')
 
 // Initialize express
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
+app.use(cookieSession({
+  // name: 'user_id',
+  keys: ["pinkboat"],
+}))
+
 // set user_id as local variable that can send to all views
 app.use((req, res, next) => {
-  res.locals.user_id = req.cookies["user_id"];
+  res.locals.user_id = req.session.user_id;
   // pass entire `users` string Object to _header.ejs
   res.locals.users = users;
   // console.log("header:", res.locals.users);
@@ -87,8 +93,8 @@ function generateRandomString() {
 // Defining (registering) a HTTP GET request on /
 // Along with a callback func that will handle the request
 app.get("/", (req, res) => {
-  // if user is logged in
-  if ( req.cookies["user_id"] ) {
+  // if user is logged in (cookie exist)
+  if ( req.session.user_id ) {
     res.redirect("/urls");
   // if user is not logged in
   } else {
@@ -103,7 +109,7 @@ app.get("/urls", (req, res) => {
   const templateVars = {
     urls: []
   };
-  const user_id = req.cookies["user_id"];
+  const user_id = req.session.user_id;
 
   // looking for user_id in urlDatabase
   for (let shortURL in urlDatabase) {
@@ -118,6 +124,8 @@ app.get("/urls", (req, res) => {
       }
     });
   }
+
+  console.log(urlDatabase);
   res.render("urls_index", templateVars);
 });
 
@@ -134,9 +142,8 @@ app.post("/urls", (req, res) => {
   urlDatabase[shortURL] = {
     shortURL: shortURL,
     longURL: req.body.longURL,
-    userID: [req.cookies["user_id"]]
+    userID: [req.session.user_id]
   }
-  console.log(urlDatabase);
   // Redirect to /urls and list urlDatabase
   res.redirect("/urls");
 });
@@ -190,8 +197,6 @@ app.post("/login", (req, res) => {
   // console.log(hashedPassword);
   const rightPassword = findUser(email, password);
 
-
-
   // A user cannot log in with an incorrect email
   if ( !rightEmail ) {
     res.status(403).send("E-mail address cannot be found.");
@@ -200,16 +205,16 @@ app.post("/login", (req, res) => {
     res.status(403).send(`Password not match to ${email}`);
   } else {
     const user_id = findByEmail(email);
-    // set user_id to cookie
-    res.cookie("user_id", user_id);
+    // set the user_id key on a session then pass to cookie
+    req.session.user_id = user_id;
     res.redirect("/");
   }
 });
 
-// Log out and clear the user_id cookie
+// Log out and clear the session cookie
 // Redirects to /urls
 app.post("/logout", (req, res) => {
-  res.clearCookie("user_id");
+  req.session = null;
   res.redirect("/");
 });
 
@@ -224,7 +229,7 @@ app.get("/register", (req, res) => {
 // Redirects to /urls
 app.post("/register", (req, res) => {
   const { email, password } = req.body;
-  const userExist = users[req.cookies["user_id"]];
+  const userExist = findByEmail(email);
   // If the e-mail or password are empty strings
   if (!email || !password) {
     res.status(400).send('Please input email or password.');
@@ -242,7 +247,8 @@ app.post("/register", (req, res) => {
       password: hashedPassword
     };
     console.log(users);
-    res.cookie("user_id", id);
+    // set the user_id key on a session then pass to cookie
+    req.session.user_id = id;
 
     res.redirect('/urls');
   }
