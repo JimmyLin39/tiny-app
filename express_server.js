@@ -45,12 +45,12 @@ const users = {
   '1': {
     user_id: '1',
     email: 'amy@example.com',
-    password: 'amy'
+    password: bcrypt.hashSync('amy', 10)
   },
   '2': {
     user_id: '2',
     email: 'tom@example.com',
-    password: 'tom'
+    password: bcrypt.hashSync('tom', 10)
   }
 };
 
@@ -141,7 +141,7 @@ app.get('/urls', (req, res) => {
         templateVars.urls.push(urlDatabase[shortURL]) ;
       }
     }
-    console.log(urlDatabase);
+    // console.log(urlDatabase);
     res.render('urls_index', templateVars);
   }
  });
@@ -233,8 +233,17 @@ app.post('/urls/:id', (req, res) => {
 // Removes a URL resource from urlDatabase
 // Redirects to /urls
 app.post('/urls/:id/delete', (req, res) => {
-  delete urlDatabase[req.params.id];
-  res.redirect('/urls');
+  const user_id = req.session.user_id;
+  const shortURL = req.params.id;
+  if (!user_id ) {
+    res.status(403).send('Please login.');
+  // if user is logged it but does not own the URL with the given ID
+  } else if ( !findShortUrlByID(shortURL, user_id) ) {
+    res.status(403).send('You did not own this short URL.');
+  } else {
+    delete urlDatabase[shortURL];
+    res.redirect('/urls');
+  }
 });
 
 // Go to Login page
@@ -264,7 +273,7 @@ app.get('/register', (req, res) => {
 // Redirects to /
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
-  // Use bcrypt to check passwords
+  // check email and Use bcrypt to check passwords
   const rightPassword = findUser(email, password);
 
   // A user cannot log in with an incorrect email or password
@@ -300,7 +309,7 @@ app.post('/register', (req, res) => {
       email: email,
       password: hashedPassword
     };
-    console.log(users);
+    // console.log(users);
     // set the user_id key on a session then pass to cookie
     req.session.user_id = id;
 
