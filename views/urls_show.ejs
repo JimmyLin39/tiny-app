@@ -13,7 +13,8 @@
   <main>
     <%# Display shortURL %>
     <% if (urls) {%>
-      <h1>ShortURL: <%= shortURL %>
+      <h1>ShortURL: <a href="/u/<%= shortURL %>" id="shortURL"><%= shortURL %></a></h1>
+      <button onclick="copyShortURL()">Copy Short Link</button>
       <%# Add an Update button that will update longURL %>
       <form action="/urls/<%= shortURL %>" method="POST">
         <input
@@ -27,6 +28,13 @@
       <h1>Given ShortURL: <%= shortURL %> NOT Exist</h1>
     <%}%>
   </main>
-
+  <script>
+  function copyShortURL() {
+    var copyURL = 'http://localhost:8080/u/<%= shortURL %>';
+    // copyURL.select();
+    document.execCommand("Copy");
+    alert("Copied the URL: " + copyURL);
+  }
+  </script>
 </body>
 </html>
