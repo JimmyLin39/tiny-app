@@ -5,13 +5,11 @@
         <!-- display user email -->
         <% for (const id in users){ %>
           <% if (id === user_id) { %>
-              Hello
-  
-              <%= users[id].email %>
+            <h3 class="text-muted">Hello <%= users[id].email %></h3>  
           <% } %>
         <% } %>
         <!-- a logout button POST /logout and clear user_id cookie -->
-        <input class="btn btn-danger btn-sm" type="submit" value="Logout">
+        <input class="nav nav-pill float-right" type="submit" value="Logout">
       </form>
     <% }else { %>
       <a href="/login">Login</a>
