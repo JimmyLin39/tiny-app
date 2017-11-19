@@ -3,18 +3,19 @@
 <html lang="en">
 <head>
   <title>Tiny App</title>
+  <script src="/script/copylink.js"></script>
 </head>
 <body>
-
   <header>
     <% include ./partials/_header %>
   </header>
-
   <main>
     <%# Display shortURL %>
     <% if (urls) {%>
-      <h1>ShortURL: <a href="/u/<%= shortURL %>" id="shortURL"><%= shortURL %></a></h1>
-      <button onclick="copyShortURL()">Copy Short Link</button>
+      <h1>ShortURL: <a href="/u/<%= shortURL %>"><%= shortURL %></a></h1>
+      <input type="text" value="http://localhost:8080/u/<%= shortURL %>" id="myInput" style="width: 250px">
+      <button onclick="myFunction()">Share</button>
+
       <%# Add an Update button that will update longURL %>
       <form action="/urls/<%= shortURL %>" method="POST">
         <input
@@ -28,13 +29,5 @@
       <h1>Given ShortURL: <%= shortURL %> NOT Exist</h1>
     <%}%>
   </main>
-  <script>
-  function copyShortURL() {
-    var copyURL = 'http://localhost:8080/u/<%= shortURL %>';
-    // copyURL.select();
-    document.execCommand("Copy");
-    alert("Copied the URL: " + copyURL);
-  }
-  </script>
 </body>
 </html>

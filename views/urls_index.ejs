@@ -3,28 +3,48 @@
 <html lang="en">
 <head>
   <title>Tiny App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
+  <!-- Custom styles for this template -->
 </head>
-<body>
-  <% include ./partials/_header %>
+<body style>
+  <div class="container">
+
+  <header>
+    <% include ./partials/_header %>
+  </header>
   <main>
-    <table width="400">
+    <div class="narrow-jumbotron">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Short Link</th>
+          <th scope="col">Full Link</th>
+          <th scope="col">Share</th>
+          <th scope="col">Update</th>
+          <th scope="col">Delete</th>
+        </tr>
+      </thead>
       <%# list all URLs -%>
       <% for (let element of urls){ -%>
         <tr>
-          <td><%= element.shortURL %></td>
-          <td>-></td>
+          <td>u/<%= element.shortURL %></td>
           <td><a href="<%= element.longURL %>"><%= element.longURL %></a></td>
+          <td>share</td>
           <td><a href="/urls/<%= element.shortURL %>">Edit</a></td>
           <td>
             <%# Add delete buttons to each URL object in the index page -%>
             <form action="/urls/<%= element.shortURL %>/delete" method="POST">
-              <input type="submit" value="DELETE">
+              <input class="btn btn-secondary btn-sm" type="submit" value="DELETE">
             </form>
           </td>
         </tr>
       <% } %>
     </table>
-    <a href="/urls/new">Crate a New Short Link!</a>
-  </main>
+    <h3><a href="/urls/new" class="badge badge-primary">Crate a New Short Link!</a></h3>
+      </div>
+    </main>
+  </div>
 </body>
 </html>

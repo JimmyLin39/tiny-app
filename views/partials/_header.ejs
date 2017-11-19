@@ -1,19 +1,19 @@
-<header>
-    <!-- A login form will sets cookies after submit -->
-  <% if ( user_id ) { %>
-    <form action="/logout" method="POST">
-      <!-- display user email -->
-      <% for (const id in users){ -%>
-        <% if (id === user_id) { %>
-          Hello <%= users[id].email %>
-        <% } %>
-      <% } %>
-      <!-- a logout button POST /logout and clear user_id cookie -->
-      <input type="submit" value="Logout">
-    </form>
-  <% }else { %>
-    <a href="/login">Login</a>
-    <a href="/register">Register</a>
-  <% } %>
 
-</header>
+      <!-- A login form will sets cookies after submit -->
+    <% if ( user_id ) { %>
+      <form action="/logout" method="POST">
+        <!-- display user email -->
+        <% for (const id in users){ %>
+          <% if (id === user_id) { %>
+              Hello
+  
+              <%= users[id].email %>
+          <% } %>
+        <% } %>
+        <!-- a logout button POST /logout and clear user_id cookie -->
+        <input class="btn btn-danger btn-sm" type="submit" value="Logout">
+      </form>
+    <% }else { %>
+      <a href="/login">Login</a>
+      <a href="/register">Register</a>
+    <% } %>
