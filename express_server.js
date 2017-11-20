@@ -126,7 +126,7 @@ app.get('/urls', (req, res) => {
   const user_id = req.session.user_id;
   // if user is not logged in
   if (!user_id ) {
-    res.status(403).send('Please login.');
+    res.status(403).send('<h1>Please login.</h1>');
   } else {
     // set a temp value that can pass to urls_index
     const templateVars = {
@@ -165,13 +165,13 @@ app.get('/urls/:id', (req, res) => {
   const user_id =  req.session.user_id;
   // if user is not logged in
   if (!user_id ) {
-    res.status(403).send('Please login.');
+    res.status(403).send('<h1>Please login.</h1>');
   // if a URL for the given ID does not exist
   } else if ( !findShortUrlByShortUrl(shortURL) ) {
-    res.status(403).send('This short URL not exist, please create a new one.');
+    res.status(403).send('<h1>This short URL not exist, please create a new one.</h1>');
   // if user is logged it but does not own the URL with the given ID
   } else if ( !findShortUrlByID(shortURL, user_id) ) {
-    res.status(403).send('You did not own this short URL.');
+    res.status(403).send('<h1>You did not own this short URL.</h1>');
   } else {
     const templateVars = {
       shortURL: shortURL,
@@ -185,7 +185,7 @@ app.get('/urls/:id', (req, res) => {
 app.get('/u/:id', (req, res) => {
   const shortURL = req.params.id;
   if ( !findShortUrlByShortUrl(shortURL) ) {
-    res.status(403).send('This short URL not exist, please contact owner.');
+    res.status(403).send('<h1>This short URL not exist, please contact owner.</h1>');
   } else {
     const longURL = urlDatabase[shortURL].longURL;
     res.redirect(longURL);
@@ -197,7 +197,7 @@ app.post('/urls', (req, res) => {
   const user_id = req.session.user_id;
   // if user is not logged in
   if (!user_id) {
-    res.status(403).send('Please login.');
+    res.status(403).send('<h1>Please login.</h1>');
   } else {
     // generate a 6 character short string
     const shortURL = generateRandomString();
@@ -219,10 +219,10 @@ app.post('/urls/:id', (req, res) => {
   const shortURL = req.params.id;
   // if user is not logged in
   if (!user_id ) {
-    res.status(403).send('Please login.');
+    res.status(403).send('<h1>Please login.</h1>');
   // if user is logged it but does not own the URL with the given ID
   } else if ( !findShortUrlByID(shortURL, user_id) ) {
-    res.status(403).send('You did not own this short URL.');
+    res.status(403).send('<h1>You did not own this short URL.</h1>');
   } else {
     const newLongURL = req.body.longURL;
     // Update urlDatabase
@@ -237,10 +237,10 @@ app.post('/urls/:id/delete', (req, res) => {
   const user_id = req.session.user_id;
   const shortURL = req.params.id;
   if (!user_id ) {
-    res.status(403).send('Please login.');
+    res.status(403).send('<h1>Please login.</h1>');
   // if user is logged it but does not own the URL with the given ID
   } else if ( !findShortUrlByID(shortURL, user_id) ) {
-    res.status(403).send('You did not own this short URL.');
+    res.status(403).send('<h1>You did not own this short URL.</h1>');
   } else {
     delete urlDatabase[shortURL];
     res.redirect('/urls');
@@ -279,7 +279,7 @@ app.post('/login', (req, res) => {
 
   // A user cannot log in with an incorrect email or password
   if ( !rightPassword ) {
-    res.status(403).send(`The email and password you entered did not match our records.`);
+    res.status(403).send(`<h1>The email and password you entered did not match our records.</h1>`);
   } else {
     const user_id = findByEmail(email);
     // set the user_id key on a session then pass to cookie
