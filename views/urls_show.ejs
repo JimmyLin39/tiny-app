@@ -3,31 +3,46 @@
 <html lang="en">
 <head>
   <title>Tiny App</title>
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
+  <!-- Custom styles for this template -->
+  <link href="/narrow-jumbotron.css" rel="stylesheet">
   <script src="/script/copylink.js"></script>
 </head>
 <body>
-  <header class="header clearfix">
-    <% include ./partials/_header %>
-  </header>
-  <main>
-    <%# Display shortURL %>
-    <% if (urls) {%>
-      <h1>ShortURL: <a href="/u/<%= shortURL %>"><%= shortURL %></a></h1>
-      <input type="text" value="http://localhost:8080/u/<%= shortURL %>" id="myInput" style="width: 250px">
-      <button onclick="myFunction()">Share</button>
+  <div class="container">
 
-      <%# Add an Update button that will update longURL %>
-      <form action="/urls/<%= shortURL %>" method="POST">
-        <input
-          type="text"
-          name="longURL"
-          value="<%= urls.longURL %>"
-          style="width: 200px">
-        <input type="submit" value="Update">
-      </form>
-    <% } else{ %>
-      <h1>Given ShortURL: <%= shortURL %> NOT Exist</h1>
-    <%}%>
-  </main>
+    <header class="header clearfix">
+      <% include ./partials/_header %>
+    </header>
+    
+    <main>
+      <div class="jumbotron">
+        <%# Display shortURL %>
+        <% if (urls) {%>
+          <h1>ShortURL: <a href="/u/<%= shortURL %>"><%= shortURL %></a></h1>
+          <!-- <div class="input-group">
+            <input type="text" class="form-control" value="http://localhost:8080/u/<%= shortURL %>" id="myInput">
+            <button onclick="myFunction()" class="btn btn-success">SHARE</button>
+          </div> -->
+        
+          <%# Add an Update button that will update longURL %>
+          <form action="/urls/<%= shortURL %>" method="POST">
+            <div class="input-group">
+              <input type="text" class="form-control" name="longURL" value="<%= urls.longURL %>">
+              <input type="submit" class="btn btn-primary" value="UPDATE">
+            </div>
+          </form>
+        <% } else{ %>
+          <h1>Given ShortURL: <%= shortURL %> NOT Exist</h1>
+        <%}%>
+      </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; Jimmy Lin Nov.2017</p>
+    </footer>
+
+  </div>
 </body>
 </html>
