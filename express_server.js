@@ -296,10 +296,10 @@ app.post('/register', (req, res) => {
   const userExist = findByEmail(email);
   // If the e-mail or password are empty strings
   if (!email || !password) {
-    res.status(400).send('Please input email or password.');
+    res.status(400).send('<h1>Please input email or password.</h1>');
   // If user already exist
   }else if ( userExist ) {
-    res.status(400).send(`User ${email} already exist.`);
+    res.status(400).send(`<h1>User ${email} already exist.</h1>`);
   } else {
     const id = generateRandomString();
     // apply bcrypt to the password
