@@ -1,53 +1,59 @@
-<%# list all short URL and it's full URL %>
+<!-- List all short URL and it's full URL  -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <title>Tiny App</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
   <!-- Custom styles for this template -->
   <link href="/narrow-jumbotron.css" rel="stylesheet">
 </head>
-<body style>
+<body>
   <div class="container">
 
-  <header class="header clearfix">
-    <% include ./partials/_header %>
-  </header>
-  <main>
-    <div class="narrow-jumbotron">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Short Link</th>
-          <th scope="col">Full Link</th>
-          <th scope="col">Share</th>
-          <th scope="col">Update</th>
-          <th scope="col">Delete</th>
-        </tr>
-      </thead>
-      <%# list all URLs -%>
-      <% for (let element of urls){ %>
-        <tr>
-          <td>u/<%= element.shortURL %></td>
-          <td><a href="<%= element.longURL %>"><%= element.longURL %></a></td>
-          <td>share</td>
-          <td><a href="/urls/<%= element.shortURL %>">Edit</a></td>
-          <td>
-            <%# Add delete buttons to each URL object in the index page -%>
-            <form action="/urls/<%= element.shortURL %>/delete" method="POST">
-              <input class="btn btn-secondary btn-sm" type="submit" value="DELETE">
-            </form>
-          </td>
-        </tr>
-      <% } %>
-    </table>
-      <h3><a href="/urls/new" class="badge badge-primary">Crate a New Short Link!</a></h3>
-      </div>
-     </main>
-    </div>
+    <header class="header clearfix">
+      <% include ./partials/_header %>
+    </header>
+
+    <main>
+      <div class="narrow-jumbotron">
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Short Link</th>
+              <th scope="col">Full Link</th>
+              <th scope="col">Share</th>
+              <th scope="col">Update</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <!-- List all URLs  -->
+          <% for (let element of urls){ %>
+            <tr>
+              <td>u/<%= element.shortURL %></td>
+              <td><a href="<%= element.longURL %>"><%= element.longURL %></a></td>
+              <td>share</td>
+              <td><a class="btn btn-primary btn-sm" href="/urls/<%= element.shortURL %>" role="button">EDIT</a></td>
+              <td>
+                <!-- Add delete buttons to each URL object in the index page -->
+                <form action="/urls/<%= element.shortURL %>/delete" method="POST">
+                  <input class="btn btn-secondary btn-sm" type="submit" value="DELETE">
+                </form>
+              </td>
+            </tr>
+          <% } %>
+          </table>
+
+          <h3><a href="/urls/new" class="badge badge-primary">Crate a New Short Link!</a></h3>
+
+        </div>
+      </main>
+
+      <footer class="footer">
+          <p>&copy; Jimmy Lin Nov.2017</p>
+      </footer>
+
+    </div> <!-- /container -->
   </body>
 </html>
