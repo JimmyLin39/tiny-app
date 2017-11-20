@@ -2,17 +2,25 @@
 <html lang="en">
   <head>
     <title>Tiny App</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Custom styles for this template -->
+    <link href="/narrow-jumbotron.css" rel="stylesheet">
   </head>
   <body>
-    <h1>Welcome to Tiny APP!</h1>
-    <h2>Please Log in or <a href="/register">Register</a></h2>
-    <form action="/login" method="POST">
-      <label for="email">email</label>
-      <input id="email" type="email" name="email">
-      <label for="password">password</label>
-      <input id="password" type="password" name="password">
-      <!-- a Login button POST info to /login -->
-      <input type="submit" value="Log in">
-    </form>
+    <div class="container">
+      <div class="jumbotron">
+        <h1>Welcome to Tiny APP!</h1>
+        <h3>Please LOGIN or <a href="/register">SIGN UP</a></h3>
+        <form action="/login" class="form-signin" method="POST">
+          <label for="inputEmail" class="sr-only">Email address</label>
+          <input id="email" type="email" class="form-control" name="email" placeholder="Email address">
+          <label for="inputPassword" class="sr-only">Password</label>
+          <input id="password" type="password" class="form-control" name="password" placeholder="Password">
+          <!-- a Login button POST info to /login -->
+          <input type="submit" class="btn btn-primary btn-block" value="Log in" style="margin-top:1.5rem">
+        </form>
+      </div>
+    </div>
   </body>
 </html>
