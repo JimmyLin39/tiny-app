@@ -3,15 +3,33 @@
 <html lang="en">
   <head>
     <title>Tiny App</title>
+     <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Custom styles for this template -->
+    <link href="/narrow-jumbotron.css" rel="stylesheet">
   </head>
-  <body style="font-size:20px; padding:50px;">
-    <header class="header clearfix">
-      <% include partials/_header %>
-    </header>
-    <form action="/urls" method="POST" style="margin:150px;">
-      <label for="longURL">Enter a URL:</label>
-      <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
-      <input type="submit" value="Submit">
-    </form>
+  <body>
+    <div class="container">
+      <header class="header clearfix">
+        <% include partials/_header %>
+      </header>
+
+      <main role="main">
+        <div class="jumbotron">
+          <form action="/urls" method="POST">
+            <h1>Paste a link to shorten it:</h1>
+            <div class="input-group">
+              <input id="longURL" class="form-control" type="text" name="longURL" placeholder="http://">
+              <input type="submit" class="btn btn-primary" value="SHORTEN">
+            </div>
+          </form>
+        </div>
+      </main>
+
+      <footer class="footer">
+          <p>&copy; Jimmy Lin Nov.2017</p>
+      </footer>
+      
+    </div>
   </body>
 </html>
