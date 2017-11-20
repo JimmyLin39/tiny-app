@@ -1,17 +1,25 @@
-
-      <!-- A login form will sets cookies after submit -->
-    <% if ( user_id ) { %>
-      <form action="/logout" method="POST">
-        <!-- display user email -->
-        <% for (const id in users){ %>
-          <% if (id === user_id) { %>
-            <h3 class="text-muted">Hello <%= users[id].email %></h3>  
-          <% } %>
+<!-- A login form will sets cookies after submit -->
+<% if ( user_id ) { %>
+  <form action="/logout" method="POST">
+    <!-- display user email -->
+    <% for (const id in users){ %>
+      <% if (id === user_id) { %>
+        <nav>
+          <ul class="nav nav-pills float-right">
+            <li class="nav-item">
+              <a href="/" class="nav-link">HOME<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <!-- a logout button POST /logout and clear user_id cookie -->
+              <input class="nav-link btn-outline-danger" type="submit" value="LOGOUT">
+            </li>
+          </ul>
+          <h3 class="text-muted">Welcome! <%= users[id].email %></h3>  
+        </nav>
         <% } %>
-        <!-- a logout button POST /logout and clear user_id cookie -->
-        <input class="nav nav-pill float-right" type="submit" value="Logout">
-      </form>
-    <% }else { %>
-      <a href="/login">Login</a>
-      <a href="/register">Register</a>
     <% } %>
+  </form>
+<% }else { %>
+  <a href="/login">Login</a>
+  <a href="/register">Register</a>
+<% } %>
