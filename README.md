@@ -20,3 +20,8 @@
 
 - Install all dependencies (using the `npm install` command)
 - Run the development web server using the `node express_server.js` command
+
+## Screenshots
+
+!["Screenshot of tiny app"](https://raw.githubusercontent.com/JimmyLin39/tiny-app/feature/copylink-button/docs/screen-shot-1.png)
+!["Screenshot of tiny app"](https://raw.githubusercontent.com/JimmyLin39/tiny-app/feature/copylink-button/docs/screen-shot-2.png)
