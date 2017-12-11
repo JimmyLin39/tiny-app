@@ -208,7 +208,7 @@ app.post('/urls', (req, res) => {
       userID: req.session.user_id
     }
     // Redirect to /urls and list urlDatabase
-    res.redirect(`/urls/${shortURL}`);
+    res.redirect(`/urls`);
   }
 });
 
