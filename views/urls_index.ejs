@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
   <!-- Custom styles for this template -->
   <link href="/narrow-jumbotron.css" rel="stylesheet">
+  <script src="vendor/clipboard.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -32,14 +33,18 @@
           <!-- List all URLs  -->
           <% for (let element of urls){ %>
             <tr>
-              <td>u/<%= element.shortURL %></td>
+              <td><%= element.shortURL %></td>
               <td><a href="<%= element.longURL %>"><%= element.longURL %></a></td>
-              <td>share</td>
+              <td>
+                <button class="btn btn-info btn-sm" data-clipboard-text="http://localhost:8080/u/<%= element.shortURL %>">
+                Copy To Clipboard
+                </button>
+              </td>
               <td><a class="btn btn-primary btn-sm" href="/urls/<%= element.shortURL %>" role="button">EDIT</a></td>
               <td>
                 <!-- Add delete buttons to each URL object in the index page -->
                 <form action="/urls/<%= element.shortURL %>/delete" method="POST">
-                  <input class="btn btn-secondary btn-sm" type="submit" value="DELETE">
+                  <input class="btn btn-danger btn-sm" type="submit" value="DELETE">
                 </form>
               </td>
             </tr>
@@ -53,5 +58,21 @@
         <p>&copy; Jimmy Lin Nov.2017</p>
     </footer>
   </div> <!-- /container -->
+
+  <!-- 3. Instantiate clipboard by passing a string selector -->
+  <script>
+  var clipboard = new Clipboard('.btn');
+
+  clipboard.on('success', function(e) {
+    console.info('Action:', e.action);
+    console.info('Text:', e.text);
+    console.info('Trigger:', e.trigger);
+  });
+
+  clipboard.on('error', function(e) {
+    console.error('Action:', e.action);
+    console.error('Trigger:', e.trigger);
+  });
+  </script> 
 </body>
 </html>
